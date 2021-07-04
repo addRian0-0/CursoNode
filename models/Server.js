@@ -1,5 +1,6 @@
 const express = require('express');
-const cors = require('cors')
+const cors = require('cors');
+const { dbConnection } = require('../database/config');
 
 class Server {
 
@@ -9,11 +10,18 @@ class Server {
         this.port = process.env.PORT
         this.usuariosRoutePath = '/api/usuarios';
 
+        //Conectar a la BD
+        this.connectDB();
+
         //Middlewares
         this.middlewares();
 
         //Routes
         this.routes();
+    }
+
+    async connectDB(){
+        await dbConnection();
     }
 
     middlewares(){
