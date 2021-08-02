@@ -5,17 +5,17 @@ const Usuario = require('../models/Usuario');
 
 const usuariosGet = async (req, res = response) => {
 
-    const {limite = 5, desde = 0 } = req.body;
+    const { limite = 5, desde = 0 } = req.body;
 
-    const [ total, usuarios ] = await Promise.all([
-        Usuario.countDocuments({estado: true}),
-        Usuario.find({estado: true})
+    const [total, usuarios] = await Promise.all([
+        Usuario.countDocuments({ estado: true }),
+        Usuario.find({ estado: true })
             .skip(Number(desde))
             .limit(Number(limite))
     ]);
 
     res.json({
-        total, 
+        total,
         usuarios
     });
 }
@@ -56,15 +56,14 @@ const usuariosDelete = async (req, res = response) => {
 
     const { id } = req.params;
     const uid = req.uid;
-    //Borrar definitivamente el usuario
-    //const usuario = await Usuario.findByIdAndDelete(id);
 
     //Desactivar el usuario
-    const usuario = await Usuario.findByIdAndUpdate(id, {estado: false});
+    const usuario = await Usuario.findByIdAndUpdate(id, { estado: false });
+    const usuarioToken = req.usuario;
 
     res.json({
         usuario,
-        uid
+        usuarioToken
     });
 }
 
