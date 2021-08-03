@@ -79,7 +79,7 @@ const putCategorias = async (req, res) => {
 
     res.json({
         categoria
-    })
+    });
 
 }
 
