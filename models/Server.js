@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
+const fileUpload = require('express-fileupload');
 const { dbConnection } = require('../database/config');
 
 class Server {
@@ -15,6 +16,7 @@ class Server {
         this.categorias = '/api/categorias';
         this.productos = '/api/productos';
         this.buscar = '/api/buscar';
+        this.uploads = '/api/uploads'
         //Conectar a la BD
         this.connectDB();
 
@@ -40,6 +42,13 @@ class Server {
 
         //Public
         this.app.use(express.static('public'));
+
+        //Carga de archivos
+        this.app.use(fileUpload({
+            useTempFiles : true,
+            tempFileDir : '/tmp/',
+            createParentPath: true
+        }));
         
     }
 
@@ -50,6 +59,7 @@ class Server {
         this.app.use(this.categorias, require('../routes/Categorias'));
         this.app.use(this.productos, require('../routes/Productos'));
         this.app.use(this.buscar, require('../routes/Buscar'));
+        this.app.use(this.uploads, require('../routes/uploads'));
 
     }
 
